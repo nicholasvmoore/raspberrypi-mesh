@@ -1,0 +1,18 @@
+[Unit]
+Description=Mesh creation
+After=network.target
+Wants=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/usr/bin/iw %I set type ibss
+ExecStartPre=/usr/bin/ip link set %I up
+ExecStartPre=/usr/bin/iw %I ibss join mesh 2462 HT20
+ExecStart=/usr/bin/dhcpcd -i %I
+ExecStop=/usr/bin/ip link set %I down
+ExecStop=/usr/bin/ip addr flush dev %I
+ExecStop=/usr/bin/iw %I set type managed
+
+[Install]
+WantedBy=multi-user.target
