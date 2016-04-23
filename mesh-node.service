@@ -10,8 +10,8 @@ ExecStartPre=/usr/bin/iw wlan0 set type ibss
 ExecStartPre=/usr/bin/ifconfig wlan0 192.168.202.3 netmask 255.255.255.0
 ExecStartPre=/usr/bin/iw wlan0 ibss join mesh 2462 HT20
 ExecStart=/usr/bin/ip route add 0.0.0.0/0 via 192.168.202.2 dev wlan0 proto static
-ExecStopPre=/usr/bin/ip link set wlan0 down
-ExecStopPre=/usr/bin/ip addr flush dev wlan0
+ExecStop=/usr/bin/ip link set wlan0 down
+ExecStop=/usr/bin/ip addr flush dev wlan0
 ExecStop=/usr/bin/iw wlan0 set type managed
 
 [Install]
