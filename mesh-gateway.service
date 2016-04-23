@@ -6,21 +6,22 @@ Wants=network.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStartPre=/usr/bin/echo 1 > /proc/sys/net/ipv4/ip_forward
+ExecStartPre=/usr/bin/sysctl -w net.ipv4.ip_forward=1
 ExecStartPre=/usr/bin/iptables -t nat -A POSTROUTING -o int0 -j MASQUERADE
 ExecStartPre=/usr/bin/iptables -A FORWARD -i int0 -o wlan0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ExecStartPre=/usr/bin/iptables -A FORWARD -i int0 -o eth0 -j ACCEPT
 ExecStartPre=/usr/bin/iw wlan0 set type ibss
 ExecStartPre=/usr/bin/ifconfig wlan0 192.168.202.2 netmask 255.255.255.0
 ExecStart=/usr/bin/iw wlan0 ibss join mesh 2462 HT20
-ExecStopPre=/usr/bin/ip link set wlan0 down
-ExecStopPre=/usr/bin/ip addr flush dev wlan0
-ExecStopPre=/usr/bin/ip route flush dev wlan0
-ExecStopPre=/usr/bin/iw wlan0 set type managed
-ExecStopPre=/usr/bin/iptables -t nat -D POSTROUTING -o int0 -j MASQUERADE
-ExecStopPre=/usr/bin/iptables -D FORWARD -i int0 -o wlan0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-ExecStopPre=/usr/bin/iptables -D FORWARD -i int0 -o eth0 -j ACCEPT
 ExecStop=/usr/bin/echo 0 > /proc/sys/net/ipv4/ip_forward
+ExecStopPost=/usr/bin/ip link set wlan0 down
+ExecStopPost=/usr/bin/ip addr flush dev wlan0
+ExecStopPost=/usr/bin/ip route flush dev wlan0
+ExecStopPost=/usr/bin/iw wlan0 set type managed
+ExecStopPost=/usr/bin/iptables -t nat -D POSTROUTING -o int0 -j MASQUERADE
+ExecStopPost=/usr/bin/iptables -D FORWARD -i int0 -o wlan0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+ExecStopPost=/usr/bin/iptables -D FORWARD -i int0 -o eth0 -j ACCEPT
+ExecStop=/usr/bin/sysctl -w net.ipv4.ip_forward=0
 
 [Install]
 WantedBy=multi-user.target
