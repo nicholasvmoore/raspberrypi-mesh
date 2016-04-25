@@ -10,9 +10,9 @@ ExecStartPre=/usr/bin/modprobe batman-adv
 ExecStartPre=/usr/bin/sysctl -w net.ipv4.ip_forward=1
 ExecStartPre=/usr/bin/ip link set mtu 1532 dev wlan0
 ExecStartPre=/usr/bin/iw wlan0 set type ibss
+ExecStartPre=/usr/bin/ip link set wlan0 up
 ExecStartPre=/usr/bin/iw wlan0 ibss join mesh 2462 HT20
 ExecStartPre=/usr/local/sbin/batctl if add wlan0
-ExecStartPre=/usr/bin/ip link set wlan0 up
 ExecStartPre=/usr/bin/ip link set bat0 up
 ExecStartPre=/usr/bin/ip addr add 192.168.202.1/24 boradcast 192.168.202.255 dev bat0
 #ExecStartPre=/usr/bin/ifconfig bat0 192.168.202.1 netmask 255.255.255.0
