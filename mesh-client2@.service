@@ -1,7 +1,7 @@
 [Unit]
 Description=Mesh creation
-Wants=network.target
-After=multi-user.target
+Wants=network.target sys-subsystem-net-devices-wlan0.device
+After=multi-user.target sys-subsystem-net-devices-wlan0.device
 
 [Service]
 Type=oneshot
