@@ -1,5 +1,9 @@
 Manual Mesh inception
 ---------------------
+These steps will outline setting up a B.A.T.M.A.N. mesh manually. I've put these steps in SystemD unit files but there's a few options you'll get to decide if you want to use the other services.
+
+## Systemd Unit files
+For the **Mesh Client** you can specify which adapter to use and if you want to use hostapd to broadcast a wireless network bridged off the mesh then you can comment out the creation of the mesh-bridge.
 
 ## Mesh Gateway
 ```bash
